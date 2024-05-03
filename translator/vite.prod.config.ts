@@ -17,9 +17,6 @@ export default defineConfig({
                 ],
             },
         }),
-        tsconfigPaths({
-            extensions: ['.ts', '.tsx']
-        })
     ],
 
     build: {
