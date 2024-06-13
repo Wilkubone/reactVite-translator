@@ -1,16 +1,21 @@
 import { Dictonary } from "../types";
 
 export const en_GB: Dictonary = {
-    companyName: 'Code',
+    companyName: "Code",
     components: {
         header: {
-            github: 'Github',
-            discord: 'Discord',
-            title: 'Translator ReactJS'
+            github: "Github",
+            discord: "Discord",
+            title: "Translator ReactJS",
         },
         footer: {
-            flatIcon: 'FlatIcon',
-            libreTranslate: 'LibreTranslate'
-        }
-    }
-}
+            flatIcon: "FlatIcon",
+            libreTranslate: "LibreTranslate",
+        },
+    },
+    screen: {
+        translator: {
+            loading: "Fetching supported languages",
+        },
+    },
+};
