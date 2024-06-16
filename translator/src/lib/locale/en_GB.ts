@@ -12,10 +12,15 @@ export const en_GB: Dictonary = {
             flatIcon: "FlatIcon",
             libreTranslate: "LibreTranslate",
         },
+        message: {
+            tryAgain: "Try again",
+        },
     },
     screen: {
         translator: {
             loading: "Fetching supported languages",
+            empty: "No supported languages",
+            error: "Something went wrog",
         },
     },
 };

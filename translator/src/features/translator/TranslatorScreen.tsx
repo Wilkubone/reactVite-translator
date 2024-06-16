@@ -1,14 +1,16 @@
-import { Confidence, ExchangeLanguage, Loader, SelectLanguage, TextCounter, TextInput } from "lib/components";
+import { Confidence, ExchangeLanguage, Loader, Message, SelectLanguage, TextCounter, TextInput } from "lib/components";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSupportedLanguages } from "./useSupportedLanguages";
 import { Language } from "lib/models/Language";
+import { useTranslations } from "lib/hooks";
 
 
 export const TranslatorScreen: React.FunctionComponent = () => {
+    const T = useTranslations()
     const [languages, setLanguages] = useState<Array<Language>>([])
     const { isLoading, hasError, fetch: getSupportedLanguages } = useSupportedLanguages(
-         languages => console.log(languages) 
+         setLanguages
     )
 
     useEffect(() => {
@@ -18,17 +20,36 @@ export const TranslatorScreen: React.FunctionComponent = () => {
     if (isLoading) {
         return (
             
+                <FetchLoaderContainer>
+                            <Loader>
+                                <LoaderText>
+                                    {T.screen.translator.loading}
+                                </LoaderText>
+                            </Loader>
+                        </FetchLoaderContainer>
+            
+            
         )
     }
 
     if (hasError) {
         return (
-
+            <CenterContainer>
+                <Message 
+                withButton
+                message={T.screen.translator.error}
+                onClick={() => getSupportedLanguages()}
+            />
+            </CenterContainer>
         )
     }
 
     if (languages.length === 0) {
-        return ()
+        return (
+            <CenterContainer>
+                <Message message={T.screen.translator.empty}/>
+            </CenterContainer>
+        )
     }
 
     return (
@@ -77,12 +98,27 @@ const InputContainer = styled.div`
 const LoaderContainer = styled.div`
     padding: 5px 10px;
 `
+
+const FetchLoaderContainer = styled.div`
+    display: flex;
+    align-self: center;
+    width: 50%;
+`
 const InputFooter = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 `
 
-function onSuccess(languages: Language[]): void {
-    throw new Error("Function not implemented.");
-}
+const LoaderText = styled.div`
+    color: ${({ theme }) => theme.colors.typography};
+    margin-top: 10px;
+` 
+const CenterContainer = styled.div`
+    display: flex;
+    justify-content: center;
+`
+
+// function onSuccess(languages: Language[]): void {
+//     throw new Error("Function not implemented.");
+// }
