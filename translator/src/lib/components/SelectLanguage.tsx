@@ -1,16 +1,45 @@
+import React, { useMemo } from "react"
+import { Language, LanguageCode } from "lib/models"
 import styled from "styled-components"
 
-export const SelectLanguage = () => (
-    <Select>
-        <Option>
-            Polish
-        </Option>
-        <Option>
-            English
-        </Option>
+type SelectLanguageProps = {
+    languages: Array<Language>
+    selectedLanguage: LanguageCode,
+    exclude: Array<LanguageCode>,
+    onChange(newLanguage: LanguageCode): void
+}
 
-    </Select>
+export const SelectLanguage: React.FunctionComponent<SelectLanguageProps> = ({
+    languages,
+    selectedLanguage,
+    exclude,
+    onChange
+}) => {
+    const filteredLanguages = useMemo(() => languages
+    .filter(language => !exclude.includes(language.code))
+    .map(languages =>({
+        key: languages.code,
+        label: languages.name
+    })),
+     [languages, exclude]
 )
+    return (
+        <Select
+            value={selectedLanguage}
+            onChange={Event => onChange(
+                Event.target.value as LanguageCode )}
+        >
+            {filteredLanguages.map(language => (
+                <Option
+                key={language.key}
+                value={language.key}
+                >
+                    {language.label}
+                </Option>
+            ))}
+        </Select>
+    )
+}
 
 const Select = styled.select`
     max-width: 140px;
@@ -26,5 +55,5 @@ const Select = styled.select`
 
 `
 const Option = styled.option`
-    
+
 `

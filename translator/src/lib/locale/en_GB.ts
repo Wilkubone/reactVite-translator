@@ -1,6 +1,9 @@
 import { Dictonary } from "../types";
 
 export const en_GB: Dictonary = {
+    common: {
+        autoTranslate: "Auto translate",
+    },
     companyName: "Code",
     components: {
         header: {
