@@ -3,9 +3,15 @@ import { Dictonary } from "../types";
 export const en_GB: Dictonary = {
     common: {
         autoTranslate: "Auto translate",
+        companyName: "Code",
     },
-    companyName: "Code",
+
     components: {
+        app: {
+            loading: "Fetching supported languages",
+            empty: "No supported languages",
+            error: "Something went wrog",
+        },
         header: {
             github: "Github",
             discord: "Discord",
@@ -19,11 +25,9 @@ export const en_GB: Dictonary = {
             tryAgain: "Try again",
         },
     },
-    screen: {
+    screens: {
         translator: {
-            loading: "Fetching supported languages",
-            empty: "No supported languages",
-            error: "Something went wrog",
+            sourceInputPlaceholder: "Type something...",
         },
     },
 };

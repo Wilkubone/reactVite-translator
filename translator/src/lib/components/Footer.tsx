@@ -8,7 +8,7 @@ export const Footer = () => {
     return (
         <FooterContainer>
             <CodeContainer>
-                    &copy; {year} {T.companyName}
+                    &copy; {year} {T.common.companyName}
             </CodeContainer>
             <LinkContainer>
                 <Link
@@ -41,7 +41,7 @@ const CodeContainer = styled.div`
     color: ${({ theme }) => theme.colors.typography};
 `
 const LinkContainer = styled.div`
-    
+
 `
 const Link = styled.a`
     color: ${({ theme }) => theme.colors.typography};

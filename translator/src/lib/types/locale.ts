@@ -1,9 +1,15 @@
 export type Dictonary = {
     common: {
         autoTranslate: string;
+        companyName: string;
     };
-    companyName: string;
+
     components: {
+        app: {
+            loading: string;
+            error: string;
+            empty: string;
+        };
         header: {
             title: string;
             github: string;
@@ -17,11 +23,9 @@ export type Dictonary = {
             tryAgain: string;
         };
     };
-    screen: {
+    screens: {
         translator: {
-            loading: string;
-            error: string;
-            empty: string;
+            sourceInputPlaceholder: string;
         };
     };
 };
