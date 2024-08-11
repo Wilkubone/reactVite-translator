@@ -22,6 +22,9 @@ export type Dictonary = {
         message: {
             tryAgain: string;
         };
+        confidence: {
+            error: string;
+        };
     };
     screens: {
         translator: {

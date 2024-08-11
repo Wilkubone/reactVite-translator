@@ -7,7 +7,7 @@ import { SelectedLanguages } from "./types";
 import { useTranslations } from "lib/hooks";
 import { APP_CONFIG } from "lib/config";
 import { AutoDetectedLanguage } from "lib/models";
-import { useAutoDetectedLanguage } from "./actions";
+import { useAutoDetectedLanguage, useTranslateText } from "./actions";
 
 type TranslatorScreenProps = {
     languages: Array<Language>
@@ -18,6 +18,7 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = 
     languages
 }) => {
     const T = useTranslations()
+    const [translatedText, setTranslatedText] = useState<string>('')
     const [query, setQuery] = useState<string>('')
     const [autoDetectedLanguage, setAutoDetectedLanguage] = useState<AutoDetectedLanguage>()
     const [selectedLanguages, setSelectedLanguages] = useState<SelectedLanguages>({
@@ -29,12 +30,22 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = 
         hasError: hasErrorDetectingLanguage,
         fetch: autoDetectLanguage
     } = useAutoDetectedLanguage(setAutoDetectedLanguage)
+    const {
+        isLoading: isTranslatingText,
+        hasError: hasErrorTranslatingText,
+        fetch: translateText
+    } = useTranslateText(setTranslatedText)
 
-    const debouncedAutoDetectLanguage = useDebouncedCallback(
+
+    const debauncedAction = useDebouncedCallback(
         debaucedQuery => {
             if(debaucedQuery.length < 5) {
                 return
             }
+
+            selectedLanguages.source === LanguageCode.Auto
+            ? autoDetectLanguage(debaucedQuery) : translateText(debaucedQuery, selectedLanguages)
+
             if (selectedLanguages.source === LanguageCode.Auto) {
                 autoDetectLanguage(debaucedQuery)
             }
@@ -56,19 +67,19 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = 
                      }))}
                       />
                     <TextInput
-                    autoFocus
-                    value={query}
-                    onChangeText={newQuery => {
-                        if(newQuery.length > APP_CONFIG.TEXT_INPUT_LIMIT) {
-                            return
-                        }
+                        autoFocus
+                        value={query}
+                        onChangeText={newQuery => {
+                            if (newQuery.length > APP_CONFIG.TEXT_INPUT_LIMIT) {
+                                return;
+                            }
 
-                        setQuery(newQuery)
-                            debouncedAutoDetectLanguage(newQuery)
+                            setQuery(newQuery);
+                            debauncedAction(newQuery);
 
 
-                    }}
-                    placeholder={T.screens.translator.sourceInputPlaceholder}/>
+                        } }
+                        placeholder={T.screens.translator.sourceInputPlaceholder} hasError={false}/>
 
                             <LoaderContainer>
                             {isDetectingLanguage && (
@@ -86,6 +97,7 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = 
                                     source: autoDetectedLanguage?.language as LanguageCode
                                 }))
                                 setAutoDetectedLanguage(undefined)
+                                debauncedAction(query)
                             }}
                             />
                             <TextCounter
@@ -111,9 +123,15 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = 
                      }))}
                     selectedLanguage={selectedLanguages.target}
                      />
-                    <TextInput disabled/>
+                    <TextInput
+                    disabled
+                    value={translatedText}
+                    hasError={!hasErrorTranslatingText}
+                    />
                         <LoaderContainer>
-                            <Loader/>
+                            {isTranslatingText && (
+                                <Loader/>
+                            )}
                         </LoaderContainer>
             </InputContainer>
 

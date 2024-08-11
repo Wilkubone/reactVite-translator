@@ -24,6 +24,9 @@ export const en_GB: Dictonary = {
         message: {
             tryAgain: "Try again",
         },
+        confidence: {
+            error: "Something went wrong when detecting the language",
+        },
     },
     screens: {
         translator: {
